@@ -31,12 +31,12 @@
           pkgs.mkShell {
             # The Nix packages provided in the environment
             packages = [
-              pkgs.nodePackages.prettier
+              pkgs.nodePackages.pyright
               pkgs.pre-commit
               pkgs.ripgrep
               pkgs.tree
-              pkgs.python311Packages.python-lsp-server
               pkgs.python311
+              pkgs.ruff-lsp
             ];
           };
       });
