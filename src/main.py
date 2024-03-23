@@ -11,12 +11,19 @@ def main():
     # node = TextNode(text="This is text with a `code` block word", text_type="text")
     # new_nodes = split_nodes_delimiter([node], "`", txt_type="code")
     # print(new_nodes)
-    text = "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and ![another](https://i.imgur.com/dfsdkjfd.png)"
-    print(extract_markdown_images(text))
+    # text = "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and ![another](https://i.imgur.com/dfsdkjfd.png)"
+    # print(extract_markdown_images(text))
 # [("image", "https://i.imgur.com/zjjcJKZ.png"), ("another", "https://i.imgur.com/dfsdkjfd.png")]
-    text = "This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)"
-    print(extract_markdown_links(text))
+    # text = "This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)"
+    # print(extract_markdown_links(text))
 # [("link", "https://www.example.com"), ("another", "https://www.example.com/another")]
+
+    node = TextNode(
+        "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
+        text_type="text",
+    )
+    new_nodes = split_nodes_image([node])
+    print(new_nodes)
     
     # return text_node_to_html_node(node)
 
@@ -65,4 +72,27 @@ def extract_markdown_images(text: str) -> List[Tuple[str, str]]:
 def extract_markdown_links(text: str) -> List[Tuple[str, str]]:
     matches = re.findall(r"\[(.*?)\]\((.*?)\)", text)
     return matches    
+
+def split_nodes_image(old_nodes):
+    new_nodes = []
+    for node in old_nodes:
+        if type(node).__name__ != "TextNode":
+            new_nodes.extend(node)
+        else:
+            orig_type = node.text_type
+            arr = node.text.split()
+            new_node = []
+            if len(arr) % 2 == 0:
+                raise Exception("Not valid markdown")
+            for i, elem in enumerate(arr):
+                if i % 2 == 0:
+                    new_node.append(TextNode(text=elem, text_type=orig_type))
+                else:
+                    new_node.append(TextNode(text=elem, text_type=txt_type))
+            new_nodes.extend(new_node)
+    return None
+
+def split_nodes_link(old_nodes):
+    return None
+    
 main()
