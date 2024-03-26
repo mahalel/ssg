@@ -1,9 +1,11 @@
-from textnode import TextNode
+from src.inline_markdown import split_nodes_image, text_to_textnodes
+from textnode import TextNode, text_type_text
 
 
 def main():
-    node = TextNode("This is a text node", "bold", "https://www.boot.dev")
-    print(node)
+    text = "This is **text** with an *italic* word and a `code block` and an ![image](https://i.imgur.com/zjjcJKZ.png) and a [link](https://boot.dev)"
+    new_nodes = text_to_textnodes(text)
+    print(new_nodes)
 
 
 main()
