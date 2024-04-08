@@ -1,11 +1,26 @@
-from src.inline_markdown import split_nodes_image, text_to_textnodes
-from textnode import TextNode, text_type_text
+import os
+import shutil
+
+from copystatic import copy_files_recursive
+from gencontent import generate_pages_recursive
+
+
+dir_path_static = "./static"
+dir_path_public = "./public"
+dir_path_content = "./content"
+template_path = "./template.html"
 
 
 def main():
-    text = "This is **text** with an *italic* word and a `code block` and an ![image](https://i.imgur.com/zjjcJKZ.png) and a [link](https://boot.dev)"
-    new_nodes = text_to_textnodes(text)
-    print(new_nodes)
+    print("Deleting public directory...")
+    if os.path.exists(dir_path_public):
+        shutil.rmtree(dir_path_public)
+
+    print("Copying static files to public directory...")
+    copy_files_recursive(dir_path_static, dir_path_public)
+
+    print("Generating content...")
+    generate_pages_recursive(dir_path_content, template_path, dir_path_public)
 
 
 main()
